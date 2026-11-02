@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luthfiana - Data Analyst Portfolio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Library Particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Devicon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        darkbg: '#050814', 
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #050814; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+
+        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; pointer-events: none; }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .glossy-card {
+            position: relative; background: rgba(15, 23, 42, 0.7); border-radius: 1.5rem;
+            backdrop-filter: blur(12px); border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: all 0.3s ease; z-index: 1;
+        }
+        
+        html:not(.dark) .glossy-card {
+            background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(59, 130, 246, 0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .glossy-card::before {
+            content: ''; position: absolute; inset: -2px; border-radius: 1.6rem;
+            background: linear-gradient(90deg, transparent, rgba(59,130,246,0.8), transparent);
+            z-index: -1; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .glossy-card:hover::before { opacity: 1; animation: borderGlow 2.5s linear infinite; }
+        @keyframes borderGlow { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+
+        .tab-content { display: none; animation: fadeIn 0.5s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+            z-index: 100; display: none; justify-content: center; align-items: center; padding: 1rem;
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show { display: flex; opacity: 1; }
+        .modal-content {
+            background: #0f172a; border: 1px solid rgba(59,130,246,0.4); border-radius: 1.5rem;
+            padding: 1rem; max-width: 900px; width: 100%; transform: scale(0.95); transition: transform 0.3s ease;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3); position: relative;
+        }
+        .modal-overlay.show .modal-content { transform: scale(1); }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-darkbg dark:text-gray-200 transition-colors duration-300 relative">
+
+    <div id="particles-js"></div>
+
+    <!-- NAVBAR -->
+    <nav id="main-navbar" class="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 transition-opacity duration-300">
+        <div class="flex items-center gap-2 sm:gap-6 px-6 py-2.5 bg-white/70 dark:bg-gray-900/70 backdrop-blur-lg rounded-full border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
+            <a href="#home" class="text-sm font-medium hover:text-primary transition px-3 py-1 rounded-full">Home</a>
+            <a href="#about" class="text-sm font-medium hover:text-primary transition px-3 py-1 rounded-full">About</a>
+            <a href="#portfolio" class="text-sm font-medium hover:text-primary transition px-3 py-1 rounded-full">Portfolio</a>
+            <a href="#contact" class="text-sm font-medium hover:text-primary transition px-3 py-1 rounded-full">Contact</a>
+            
+            <button id="theme-toggle" class="p-1.5 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-all ml-2">
+                <i id="theme-icon-dark" class="fa-solid fa-moon hidden w-4 h-4 text-primary text-center"></i>
+                <i id="theme-icon-light" class="fa-solid fa-sun hidden w-4 h-4 text-yellow-500 text-center"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- KONTEN UTAMA -->
+    <div id="main-content" class="block">
+        
+        <!-- HOME SECTION -->
+        <section id="home" class="min-h-screen flex items-center pt-32 pb-20 px-6 sm:px-12 relative z-10">
+            <div class="max-w-6xl mx-auto w-full flex flex-col lg:flex-row items-center justify-between gap-12">
+                <div class="flex-1 text-left">
+                    <h1 class="text-4xl sm:text-6xl font-bold tracking-tight leading-tight mb-6 text-gray-900 dark:text-white">
+                        Hello, I'm <br>
+                        <span class="text-primary drop-shadow-[0_0_20px_rgba(59,130,246,0.5)]"> Luthfiana Azzalea.</span>
+                    </h1>
+                    <p class="text-gray-600 dark:text-gray-300 text-base sm:text-lg leading-relaxed mb-8 max-w-xl">
+                       An Informatics Engineering graduate with an interest in data, technology, and information management. I enjoy learning new things, exploring ideas, and applying my knowledge to create meaningful results.
+                    </p>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <a href="#portfolio" class="px-6 py-3 bg-primary text-white font-medium rounded-xl shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:-translate-y-1 transition-all flex items-center gap-2">
+                            Project <i class="fa-solid fa-arrow-right text-sm"></i>
+                        </a>
+                        <a href="#contact" class="px-6 py-3 bg-white/50 dark:bg-white/10 border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-white font-medium rounded-xl hover:-translate-y-1 transition-all flex items-center gap-2 backdrop-blur-md">
+                            Get in Touch <i class="fa-solid fa-paper-plane text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="flex-1 flex justify-center lg:justify-end">
+                    <div class="glossy-card p-4 shadow-2xl transform hover:rotate-1 transition-transform duration-500 group">
+                        <div class="relative z-10 bg-gray-200 dark:bg-gray-900 rounded-2xl overflow-hidden aspect-[3/4] flex flex-col items-center justify-center border border-gray-300 dark:border-gray-800 w-72 sm:w-80">
+                            <img src="images/foto-profil.jpg" alt="Foto Profil" class="w-full h-full object-cover">
+                        </div>
+                        <div class="mt-4 text-center relative z-10">
+                            <h3 class="font-bold text-lg text-gray-900 dark:text-white">Luthfiana Azzalea Afifah, S.kom</h3>
+                            <p class="text-xs text-primary font-medium tracking-wider uppercase mt-1">Data Enthusiast</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT SECTION -->
+        <section id="about" class="py-24 relative z-10">
+            <div class="max-w-6xl mx-auto px-6">
+                
+                <!-- Judul Utama di Tengah -->
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-gray-900 dark:text-white inline-block border-b-4 border-primary pb-2 tracking-wider">ABOUT ME</h2>
+                </div>
+                
+                <!-- Grid 2 Kolom Sejajar (Kiri & Kanan Sama Tinggi) -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+                    
+                    <!-- KOLOM KIRI: Education di atas, langsung disambung Professional Highlights di bawah -->
+                    <div class="flex flex-col gap-8">
+                        
+                        <!-- Education Card -->
+                        <div class="glossy-card p-8 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-3 mb-6">
+                                    <i class="fa-solid fa-graduation-cap text-primary text-2xl"></i>
+                                    <h3 class="text-xl font-bold tracking-wide text-gray-900 dark:text-white uppercase">Education</h3>
+                                </div>
+                                <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-1">Universitas Muhammadiyah Surakarta</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">Bachelor of Informatics Engineering</p>
+                            </div>
+                            <p class="text-sm font-medium text-primary pt-4 border-t border-gray-200/20 dark:border-gray-700/50">2022 – 2026</p>
+                        </div>
+
+                        <!-- Professional Highlights Card (Menyatu di Kolom Kiri) -->
+                        <div class="glossy-card p-8 flex-grow">
+                            <div class="flex items-center gap-3 mb-6">
+                                <i class="fa-solid fa-award text-primary text-2xl"></i>
+                                <h3 class="text-xl font-bold tracking-wide text-gray-900 dark:text-white uppercase">Professional Highlights</h3>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <!-- Poin 1 -->
+                                <div class="flex items-start gap-3">
+                                    <div class="p-2.5 rounded-xl bg-primary/10 text-primary text-lg flex-shrink-0">
+                                        <i class="fa-solid fa-database"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-sm text-gray-900 dark:text-white mb-1">Data Processing</h4>
+                                        <p class="text-xs text-gray-600 dark:text-gray-400">Data cleaning & processing.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Poin 2 -->
+                                <div class="flex items-start gap-3">
+                                    <div class="p-2.5 rounded-xl bg-primary/10 text-primary text-lg flex-shrink-0">
+                                        <i class="fa-solid fa-chart-pie"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-sm text-gray-900 dark:text-white mb-1">Data Visualization</h4>
+                                        <p class="text-xs text-gray-600 dark:text-gray-400">Presenting data through charts and visual reports</p>
+                                    </div>
+                                </div>
+
+                                <!-- Poin 3 -->
+                                <div class="flex items-start gap-3">
+                                    <div class="p-2.5 rounded-xl bg-primary/10 text-primary text-lg flex-shrink-0">
+                                        <i class="fa-solid fa-folder-open"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-sm text-gray-900 dark:text-white mb-1">Administration & Documents</h4>
+                                        <p class="text-xs text-gray-600 dark:text-gray-400">Document management and administrative support.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Poin 4 -->
+                                <div class="flex items-start gap-3">
+                                    <div class="p-2.5 rounded-xl bg-primary/10 text-primary text-lg flex-shrink-0">
+                                        <i class="fa-solid fa-users-gear"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-sm text-gray-900 dark:text-white mb-1">Teamwork</h4>
+                                        <p class="text-xs text-gray-600 dark:text-gray-400">Collaboration & adaptability.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- KOLOM KANAN: Profile Card (Memanjang ke bawah agar seimbang dengan kolom kiri) -->
+                    <div class="flex flex-col">
+                        <div class="glossy-card p-8 md:p-10 h-full flex flex-col justify-center">
+                            <div class="flex items-center gap-3 mb-6">
+                                <i class="fa-regular fa-user text-primary text-2xl"></i>
+                                <h3 class="text-xl font-bold tracking-wide text-gray-900 dark:text-white uppercase">Profile</h3>
+                            </div>
+                            <p class="text-sm sm:text-base leading-relaxed text-gray-700 dark:text-gray-300 text-justify mb-4">
+                                I am an Informatics Engineering graduate from Universitas Muhammadiyah Surakarta with experience in data processing, administration, and documentation through academic activities, organizational involvement, and internship experience.
+                            </p>
+                            <p class="text-sm sm:text-base leading-relaxed text-gray-700 dark:text-gray-300 text-justify">
+                               I have skills in managing information, organizing documents, and utilizing technology to support work processes. I enjoy learning new things, working with attention to detail, and continuously improving my skills and knowledge.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- PORTFOLIO SECTION -->
+        <section id="portfolio" class="py-20 relative z-10">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="text-center mb-10">
+                    <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Portfolio</h2>
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="flex justify-center mb-12">
+                    <div class="inline-flex flex-wrap justify-center bg-white/50 dark:bg-white/10 p-1.5 rounded-full border border-gray-200 dark:border-gray-700/50 backdrop-blur-md gap-1">
+                        <button onclick="switchTab('projects')" id="tab-projects" class="tab-btn active-tab bg-primary text-white shadow-[0_0_15px_rgba(59,130,246,0.5)] px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300">Projects</button>
+                        <button onclick="switchTab('experience')" id="tab-experience" class="tab-btn px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Experience</button>
+                        <button onclick="switchTab('certificates')" id="tab-certificates" class="tab-btn px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Certificates</button>
+                        <button onclick="switchTab('techstack')" id="tab-techstack" class="tab-btn px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Tech Stack</button>
+                    </div>
+                </div>
+
+                <!-- KONTEN TAB -->
+                <div class="relative w-full">
+                    
+                    <!-- TAB 1: PROJECTS -->
+                    <div id="content-projects" class="tab-content active w-full">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            
+                            <!-- Project 1 -->
+                            <div class="glossy-card rounded-3xl overflow-hidden flex flex-col justify-between">
+                                <div class="h-48 bg-gray-200 dark:bg-gray-800 overflow-hidden rounded-t-3xl">
+                                    <img src="images/proj1.jpg" alt="Telco" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                                </div>
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-2">Telco Customer Churn Analysis</h4>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Analisis data pelanggan telekomunikasi untuk mengidentifikasi pola churn dan faktor yang memengaruhi retensi pelanggan.</p>
+                                    <div class="mt-auto">
+                                        <button onclick="openDetail('Projects', 'Telco Customers Churn & Retention', 'Membangun dashboard analitik pelanggan telekomunikasi menggunakan dataset Telco Customer Churn untuk mengevaluasi tingkat churn, mengidentifikasi faktor yang memengaruhi retensi, serta menganalisis potensi kehilangan pendapatan. Hasil analisis menunjukkan tingkat churn sebesar 26,5% dari total 7.043 pelanggan dengan potensi kehilangan pendapatan bulanan (Lost MRR) sebesar $139.131. Pelanggan dengan kontrak Month-to-month memiliki tingkat churn tertinggi sebesar 42,7%, sedangkan pelanggan dengan masa berlangganan lebih dari 4 tahun menunjukkan tingkat churn terendah sebesar 9,5%. Dari sisi pembayaran, metode Electronic check memiliki tingkat churn tertinggi sebesar 45,3%, dibandingkan metode pembayaran otomatis yang berada di kisaran 15–16%.', 'images/proj1.jpg', 'Spreadsheet|<i class=\'fa-solid fa-file-excel text-green-500\'></i>')" class="w-full py-2 flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white text-gray-800 dark:text-white text-sm font-semibold rounded-lg border border-gray-300 dark:border-gray-600 transition-all">Details <i class="fa-solid fa-arrow-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Project 2 -->
+                            <div class="glossy-card rounded-3xl overflow-hidden flex flex-col justify-between">
+                                <div class="h-48 bg-gray-200 dark:bg-gray-800 overflow-hidden rounded-t-3xl">
+                                    <img src="images/proj2.jpg" alt="Sentimen" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                                </div>
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-2">Analisis Sentimen Media Sosial</h4>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Pengolahan data teks untuk mengidentifikasi tren dan kecenderungan opini publik di media sosial.</p>
+                                    <div class="mt-auto">
+                                        <button onclick="openDetail('Projects', 'Analisis Sentimen Media Sosial', 'Proyek ini berfokus pada analisis sentimen opini masyarakat di media sosial X (Twitter) terkait pembangunan Ibu Kota Nusantara (IKN) selama periode 2022–2025. Proses pengerjaan mencakup pengumpulan dataset, pembersihan dan persiapan data menggunakan Microsoft Excel, serta pengolahan dan analisis menggunakan Python melalui Google Colab untuk mengidentifikasi kecenderungan sentimen positif dan negatif. Hasil analisis memberikan gambaran mengenai persepsi masyarakat terhadap pembangunan IKN.', 'images/proj2.jpg', 'Colab|<i class=\'fa-brands fa-google text-orange-500\'></i>, Python|<i class=\'devicon-python-plain colored\'></i>')" class="w-full py-2 flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white text-gray-800 dark:text-white text-sm font-semibold rounded-lg border border-gray-300 dark:border-gray-600 transition-all">Details <i class="fa-solid fa-arrow-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Project 3 -->
+                            <div class="glossy-card rounded-3xl overflow-hidden flex flex-col justify-between">
+                                <div class="h-48 bg-gray-200 dark:bg-gray-800 overflow-hidden rounded-t-3xl">
+                                    <img src="images/proj3.jpg" alt="Superstore" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                                </div>
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-2">Superstore Sales Overview</h4>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Dashboard analisis penjualan retail berdasarkan wilayah, kategori produk, dan tren penjualan.</p>
+                                    <div class="mt-auto">
+                                        <button onclick="openDetail('Projects', 'Superstore Sales Overview', 'Membangun dashboard analitik penjualan retail menggunakan dataset Superstore periode 2015–2018 untuk menganalisis performa penjualan dan mengidentifikasi tren bisnis. Hasil analisis menunjukkan total penjualan sebesar $2,261,537 dengan pertumbuhan 50.5% dari tahun 2015 hingga 2018. Region West menjadi kontributor penjualan tertinggi sebesar $710,220 (31.4%), sedangkan kategori Technology mendominasi dengan penjualan $827,456 (36.6%), terutama dari subkategori Phones. Dari sisi logistik, rata-rata durasi pengiriman tercatat 9.2 hari, dengan Same Day sebagai metode pengiriman tercepat.', 'images/proj3.jpg', 'Spreadsheet|<i class=\'fa-solid fa-file-excel text-green-500\'></i>')" class="w-full py-2 flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white text-gray-800 dark:text-white text-sm font-semibold rounded-lg border border-gray-300 dark:border-gray-600 transition-all">Details <i class="fa-solid fa-arrow-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Project 4 -->
+                            <div class="glossy-card rounded-3xl overflow-hidden flex flex-col justify-between">
+                                <div class="h-48 bg-gray-200 dark:bg-gray-800 overflow-hidden rounded-t-3xl">
+                                    <img src="images/proj4.jpg" alt="Project 4" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                                </div>
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-2">Web Frontend Development</h4>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Perancangan dan pengembangan antarmuka website yang responsif dan interaktif.</p>
+                                    <div class="mt-auto">
+                                        <button onclick="openDetail('Projects', 'Web Frontend Development', 'Pengembangan website portofolio pribadi menggunakan HTML5, CSS3, Tailwind CSS, dan JavaScript. Menghadirkan desain responsif dengan fitur interaktif seperti dark/light mode, navigasi dinamis, animasi visual, serta formulir kontak untuk menampilkan profil, pengalaman, dan proyek secara profesional.', 'images/proj4.jpg', 'HTML5|<i class=\'fa-brands fa-html5 text-orange-500\'></i>, CSS3|<i class=\'fa-brands fa-css3-alt text-blue-500\'></i>, Tailwind CSS|<i class=\'fa-solid fa-wind text-cyan-400\'></i>, JavaScript|<i class=\'fa-brands fa-js text-yellow-400\'></i>, VS Code|<i class=\'fa-solid fa-code text-blue-400\'></i>')" class="w-full py-2 flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white text-gray-800 dark:text-white text-sm font-semibold rounded-lg border border-gray-300 dark:border-gray-600 transition-all">Details <i class="fa-solid fa-arrow-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Project 5 -->
+                            <div class="glossy-card rounded-3xl overflow-hidden flex flex-col justify-between">
+                                <div class="h-48 bg-gray-200 dark:bg-gray-800 overflow-hidden rounded-t-3xl">
+                                    <img src="images/proj5.jpg" alt="Project 5" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                                </div>
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-2">Financial Loan Performance & Credit Risk Dashboard</h4>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Loan Performance & Credit Risk Analysis</p>
+                                    <div class="mt-auto">
+                                        <button onclick="openDetail('Projects', 'Financial Loan Performance & Credit Risk Dashboard', 'Proyek ini berfokus pada analisis kinerja penyaluran pinjaman dan risiko kredit menggunakan Power BI melalui pengolahan data dan visualisasi interaktif. Analisis menunjukkan bahwa kategori *Debt Consolidation* mendominasi tujuan penggunaan pinjaman, sementara jumlah pengajuan mengalami tren peningkatan dan mencapai puncaknya pada bulan Desember. Dari aspek risiko kredit, distribusi pinjaman bermasalah (Bad Loan) terkonsentrasi pada nasabah dengan kategori Grade B, C, dan D. Hasil analisis ini memberikan gambaran mengenai pola penyaluran pinjaman serta profil risiko kredit yang dapat menjadi bahan pertimbangan dalam evaluasi kebijakan dan pengambilan keputusan bisnis.', 'images/proj5.jpg', 'Power BI|<i class=\'fa-solid fa-chart-simple text-yellow-500\'></i>')" class="w-full py-2 flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white text-gray-800 dark:text-white text-sm font-semibold rounded-lg border border-gray-300 dark:border-gray-600 transition-all">Details <i class="fa-solid fa-arrow-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Project 6 -->
+                            <div class="glossy-card rounded-3xl overflow-hidden flex flex-col justify-between">
+                                <div class="h-48 bg-gray-200 dark:bg-gray-800 overflow-hidden rounded-t-3xl">
+                                    <img src="images/proj6.jpg" alt="Project 6" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                                </div>
+                                <div class="p-6 flex flex-col flex-grow">
+                                    <h4 class="font-bold text-lg text-gray-900 dark:text-white mb-2">Soon</h4>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Looker studio</p>
+                                    <div class="mt-auto">
+                                        <button onclick="openDetail('Projects', 'Looker Studio Analytics', 'Penyusunan laporan data dinamis menggunakan Google Looker Studio.', 'images/proj6.jpg', 'Looker Studio|<i class=\'fa-solid fa-chart-line text-blue-400\'></i>')" class="w-full py-2 flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white text-gray-800 dark:text-white text-sm font-semibold rounded-lg border border-gray-300 dark:border-gray-600 transition-all">Details <i class="fa-solid fa-arrow-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: EXPERIENCE -->
+                    <div id="content-experience" class="tab-content w-full">
+                        <div class="grid grid-cols-1 gap-6">
+                            
+                            <!-- Experience 1: FOSTI UMS -->
+                            <div class="glossy-card p-4 rounded-3xl flex flex-col sm:flex-row gap-6 items-center sm:items-start group">
+                                <div class="w-full sm:w-48 h-32 rounded-2xl bg-gray-200 dark:bg-gray-800 overflow-hidden flex-shrink-0">
+                                    <img src="images/exp1.jpg" alt="FOSTI UMS" class="w-full h-full object-cover hover:scale-110 transition-transform">
+                                </div>
+                                <div class="flex-grow pt-2 w-full">
+                                    <p class="text-sm font-bold text-primary mb-1">2022 - 2024</p>
+                                    <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Staff Divisi Riset dan Teknologi</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">FOSTI UMS. Terlibat aktif dalam penyusunan dokumen, kegiatan kepanitiaan, serta kesekretariatan.</p>
+                                    <button onclick="openDetail('Experience', 'Staff Divisi Riset dan Teknologi', 'Aktif sebagai staf Divisi Riset dan Teknologi selama dua periode (2022-2024) kepengurusan dengan turut berkontribusi dalam pengembangan kegiatan organisasi di bidang teknologi. Selain itu, terlibat dalam persiapan dan pelaksanaan berbagai kegiatan organisasi, termasuk workshop, rapat, dan pelatihan, serta membantu kebutuhan administrasi, penyusunan dokumen, dan koordinasi antar divisi.', 'images/exp1.jpg', 'Administrasi|<i class=\'fa-solid fa-folder-open\'></i>, team work|<i class=\'fa-solid fa-users\'></i>')" class="w-full sm:w-auto px-6 py-2 flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white text-gray-800 dark:text-white text-sm font-semibold rounded-lg transition-all">Details <i class="fa-solid fa-arrow-right"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Experience 2: PKL -->
+                            <div class="glossy-card p-4 rounded-3xl flex flex-col sm:flex-row gap-6 items-center sm:items-start group">
+                                <div class="w-full sm:w-48 h-32 rounded-2xl bg-gray-200 dark:bg-gray-800 overflow-hidden flex-shrink-0">
+                                    <img src="images/exp2.jpg" alt="PKL" class="w-full h-full object-cover hover:scale-110 transition-transform">
+                                </div>
+                                <div class="flex-grow pt-2 w-full">
+                                    <p class="text-sm font-bold text-primary mb-1">2024</p>
+                                    <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Praktek Kerja Lapangan (PKL)</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">Memberikan materi edukasi terkait teknologi informasi, serta berkontribusi langsung dalam manajemen dan persiapan acara sekolah.</p>
+                                    <button onclick="openDetail('Experience', 'Praktek Kerja Lapangan (PKL)', 'Melaksanakan kegiatan Praktik Kerja Lapangan (PKL) pada tahun 2024 sebagai bentuk penerapan pengetahuan dan keterampilan di lingkungan kerja. Berpartisipasi dalam kegiatan edukasi teknologi informasi kepada siswa, mendukung kebutuhan operasional dan administrasi, serta terlibat dalam persiapan dan pelaksanaan berbagai kegiatan sekolah. Pengalaman ini turut mengembangkan kemampuan komunikasi, koordinasi, kerja sama tim, serta tanggung jawab dalam menyelesaikan tugas.', 'images/exp2.jpg', 'communication|<i class=\'fa-solid fa-comments\'></i>, teamwork&Collaboration|<i class=\'fa-solid fa-users\'></i>')" class="w-full sm:w-auto px-6 py-2 flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white text-gray-800 dark:text-white text-sm font-semibold rounded-lg transition-all">Details <i class="fa-solid fa-arrow-right"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Experience 3: Diskominfo SP Kota Surakarta -->
+                            <div class="glossy-card p-4 rounded-3xl flex flex-col sm:flex-row gap-6 items-center sm:items-start group">
+                                <div class="w-full sm:w-48 h-32 rounded-2xl bg-gray-200 dark:bg-gray-800 overflow-hidden flex-shrink-0">
+                                    <img src="images/exp3.jpg" alt="Diskominfo" class="w-full h-full object-cover hover:scale-110 transition-transform">
+                                </div>
+                                <div class="flex-grow pt-2 w-full">
+                                    <p class="text-sm font-bold text-primary mb-1">2025</p>
+                                    <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Diskominfo SP Kota Surakarta - Internship</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">Berkontribusi dalam pengembangan dan pengujian sistem penerimaan siswa/mahasiswa magang.</p>
+                                    <button onclick="openDetail('Experience', 'Diskominfo SP Kota Surakarta - Internship', 'Berkontribusi dalam pengembangan website penerimaan siswa/mahasiswa magang melalui serangkaian tahapan pengembangan sistem, mulai dari analisis kebutuhan, perancangan antarmuka, implementasi fitur, hingga pengujian sistem. Terlibat dalam proses pengembangan untuk memastikan website dapat berfungsi dengan baik dan sesuai kebutuhan pengguna. Kegiatan ini berfokus pada pengembangan sistem berbasis web guna mendukung digitalisasi dan mempermudah proses administrasi penerimaan peserta magang.', 'images/exp3.jpg', 'Web Development|<i class=\'fa-solid fa-code\'></i>, Team work|<i class=\'fa-solid fa-users\'></i>')" class="w-full sm:w-auto px-6 py-2 flex items-center justify-center gap-2 bg-gray-100 dark:bg-gray-800 hover:bg-primary hover:text-white text-gray-800 dark:text-white text-sm font-semibold rounded-lg transition-all">Details <i class="fa-solid fa-arrow-right"></i></button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: CERTIFICATES -->
+                    <div id="content-certificates" class="tab-content w-full">
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                            
+                            <!-- Sertifikat 1 -->
+                            <div class="glossy-card rounded-2xl p-3 relative group overflow-hidden cursor-pointer" onclick="openModal('Sertifikat Data Analytics', 'images/sertif1.jpg')">
+                                <img src="images/sertif1.jpg" alt="Sertif 1" class="w-full aspect-[4/3] object-cover rounded-xl border border-gray-300 dark:border-gray-700">
+                                <div class="absolute inset-0 bg-darkbg/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center rounded-2xl">
+                                    <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl mb-2"></i>
+                                    <span class="text-white font-semibold text-sm">Lihat Sertifikat</span>
+                                </div>
+                            </div>
+
+                            <!-- Sertifikat 2 -->
+                            <div class="glossy-card rounded-2xl p-3 relative group overflow-hidden cursor-pointer" onclick="openModal('Sertifikat Excel Mastery', 'images/sertif2.jpg')">
+                                <img src="images/sertif2.jpg" alt="Sertif 2" class="w-full aspect-[4/3] object-cover rounded-xl border border-gray-300 dark:border-gray-700">
+                                <div class="absolute inset-0 bg-darkbg/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center rounded-2xl">
+                                    <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl mb-2"></i>
+                                    <span class="text-white font-semibold text-sm">Lihat Sertifikat</span>
+                                </div>
+                            </div>
+
+                            <!-- Sertifikat 3 -->
+                            <div class="glossy-card rounded-2xl p-3 relative group overflow-hidden cursor-pointer" onclick="openModal('Sertifikat Python Basics', 'images/sertif3.jpg')">
+                                <img src="images/sertif3.jpg" alt="Sertif 3" class="w-full aspect-[4/3] object-cover rounded-xl border border-gray-300 dark:border-gray-700">
+                                <div class="absolute inset-0 bg-darkbg/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center rounded-2xl">
+                                    <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl mb-2"></i>
+                                    <span class="text-white font-semibold text-sm">Lihat Sertifikat</span>
+                                </div>
+                            </div>
+
+                            <!-- Sertifikat 4 -->
+                            <div class="glossy-card rounded-2xl p-3 relative group overflow-hidden cursor-pointer" onclick="openModal('Sertifikat Power BI', 'images/sertif4.jpg')">
+                                <img src="images/sertif4.jpg" alt="Sertif 4" class="w-full aspect-[4/3] object-cover rounded-xl border border-gray-300 dark:border-gray-700">
+                                <div class="absolute inset-0 bg-darkbg/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center rounded-2xl">
+                                    <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl mb-2"></i>
+                                    <span class="text-white font-semibold text-sm">Lihat Sertifikat</span>
+                                </div>
+                            </div>
+
+                            <!-- Sertifikat 5 -->
+                            <div class="glossy-card rounded-2xl p-3 relative group overflow-hidden cursor-pointer" onclick="openModal('Sertifikat Frontend Dev', 'images/sertif5.jpg')">
+                                <img src="images/sertif5.jpg" alt="Sertif 5" class="w-full aspect-[4/3] object-cover rounded-xl border border-gray-300 dark:border-gray-700">
+                                <div class="absolute inset-0 bg-darkbg/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center rounded-2xl">
+                                    <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl mb-2"></i>
+                                    <span class="text-white font-semibold text-sm">Lihat Sertifikat</span>
+                                </div>
+                            </div>
+
+                            <!-- Sertifikat 6 -->
+                            <div class="glossy-card rounded-2xl p-3 relative group overflow-hidden cursor-pointer" onclick="openModal('Sertifikat JavaScript', 'images/sertif6.jpg')">
+                                <img src="images/sertif6.jpg" alt="Sertif 6" class="w-full aspect-[4/3] object-cover rounded-xl border border-gray-300 dark:border-gray-700">
+                                <div class="absolute inset-0 bg-darkbg/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center rounded-2xl">
+                                    <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl mb-2"></i>
+                                    <span class="text-white font-semibold text-sm">Lihat Sertifikat</span>
+                                </div>
+                            </div>
+
+                            <!-- Sertifikat 7 -->
+                            <div class="glossy-card rounded-2xl p-3 relative group overflow-hidden cursor-pointer" onclick="openModal('Sertifikat SQL Database', 'images/sertif7.jpg')">
+                                <img src="images/sertif7.jpg" alt="Sertif 7" class="w-full aspect-[4/3] object-cover rounded-xl border border-gray-300 dark:border-gray-700">
+                                <div class="absolute inset-0 bg-darkbg/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center rounded-2xl">
+                                    <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl mb-2"></i>
+                                    <span class="text-white font-semibold text-sm">Lihat Sertifikat</span>
+                                </div>
+                            </div>
+
+                            <!-- Sertifikat 8 -->
+                            <div class="glossy-card rounded-2xl p-3 relative group overflow-hidden cursor-pointer" onclick="openModal('Sertifikat Professional Org', 'images/sertif8.jpg')">
+                                <img src="images/sertif8.jpg" alt="Sertif 8" class="w-full aspect-[4/3] object-cover rounded-xl border border-gray-300 dark:border-gray-700">
+                                <div class="absolute inset-0 bg-darkbg/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center rounded-2xl">
+                                    <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl mb-2"></i>
+                                    <span class="text-white font-semibold text-sm">Lihat Sertifikat</span>
+                                </div>
+                            </div>
+
+                            <!-- Sertifikat 9 -->
+                            <div class="glossy-card rounded-2xl p-3 relative group overflow-hidden cursor-pointer" onclick="openModal('Sertifikat Professional Org', 'images/sertif9.jpg')">
+                                <img src="images/sertif9.jpg" alt="Sertif 9" class="w-full aspect-[4/3] object-cover rounded-xl border border-gray-300 dark:border-gray-700">
+                                <div class="absolute inset-0 bg-darkbg/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center rounded-2xl">
+                                    <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl mb-2"></i>
+                                    <span class="text-white font-semibold text-sm">Lihat Sertifikat</span>
+                                </div>
+                            </div>
+
+                            <!-- Sertifikat 10 -->
+                            <div class="glossy-card rounded-2xl p-3 relative group overflow-hidden cursor-pointer" onclick="openModal('Sertifikat Professional Org', 'images/sertif10.jpg')">
+                                <img src="images/sertif10.jpg" alt="Sertif 10" class="w-full aspect-[4/3] object-cover rounded-xl border border-gray-300 dark:border-gray-700">
+                                <div class="absolute inset-0 bg-darkbg/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center rounded-2xl">
+                                    <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl mb-2"></i>
+                                    <span class="text-white font-semibold text-sm">Lihat Sertifikat</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: TECH STACK -->
+                    <div id="content-techstack" class="tab-content w-full">
+                        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
+                            
+                            <!-- Power BI -->
+                            <div class="glossy-card p-6 rounded-2xl flex flex-col items-center justify-center text-center">
+                                <i class="fa-solid fa-chart-simple text-yellow-500 text-4xl mb-3"></i>
+                                <span class="text-xs font-semibold text-gray-900 dark:text-white">Power BI</span>
+                            </div>
+
+                            <!-- Google Sheets -->
+                            <div class="glossy-card p-6 rounded-2xl flex flex-col items-center justify-center text-center">
+                                <i class="fa-solid fa-file-excel text-green-500 text-4xl mb-3"></i>
+                                <span class="text-xs font-semibold text-gray-900 dark:text-white">Google Sheets</span>
+                            </div>
+
+                            <!-- Excel -->
+                            <div class="glossy-card p-6 rounded-2xl flex flex-col items-center justify-center text-center">
+                                <i class="fa-solid fa-file-csv text-green-600 text-4xl mb-3"></i>
+                                <span class="text-xs font-semibold text-gray-900 dark:text-white">Excel</span>
+                            </div>
+
+                            <!-- VS Code -->
+                            <div class="glossy-card p-6 rounded-2xl flex flex-col items-center justify-center text-center">
+                                <i class="devicon-vscode-plain colored text-4xl mb-3"></i>
+                                <span class="text-xs font-semibold text-gray-900 dark:text-white">VS Code</span>
+                            </div>
+
+                            <!-- Jupyter NB -->
+                            <div class="glossy-card p-6 rounded-2xl flex flex-col items-center justify-center text-center">
+                                <i class="devicon-jupyter-plain colored text-4xl mb-3"></i>
+                                <span class="text-xs font-semibold text-gray-900 dark:text-white">Jupyter NB</span>
+                            </div>
+
+                            <!-- Python -->
+                            <div class="glossy-card p-6 rounded-2xl flex flex-col items-center justify-center text-center">
+                                <i class="devicon-python-plain colored text-4xl mb-3"></i>
+                                <span class="text-xs font-semibold text-gray-900 dark:text-white">Python</span>
+                            </div>
+
+                            <!-- HTML -->
+                            <div class="glossy-card p-6 rounded-2xl flex flex-col items-center justify-center text-center">
+                                <i class="devicon-html5-plain colored text-4xl mb-3"></i>
+                                <span class="text-xs font-semibold text-gray-900 dark:text-white">HTML</span>
+                            </div>
+
+                            <!-- CSS -->
+                            <div class="glossy-card p-6 rounded-2xl flex flex-col items-center justify-center text-center">
+                                <i class="devicon-css3-plain colored text-4xl mb-3"></i>
+                                <span class="text-xs font-semibold text-gray-900 dark:text-white">CSS</span>
+                            </div>
+
+                            <!-- JavaScript -->
+                            <div class="glossy-card p-6 rounded-2xl flex flex-col items-center justify-center text-center">
+                                <i class="devicon-javascript-plain colored text-4xl mb-3"></i>
+                                <span class="text-xs font-semibold text-gray-900 dark:text-white">JavaScript</span>
+                            </div>
+
+                            <!-- Google Workspace -->
+                            <div class="glossy-card p-6 rounded-2xl flex flex-col items-center justify-center text-center">
+                                <i class="fa-brands fa-google text-blue-500 text-4xl mb-3"></i>
+                                <span class="text-xs font-semibold text-gray-900 dark:text-white">Google Workspace</span>
+                            </div>
+
+                            <!-- Tailwind -->
+                            <div class="glossy-card p-6 rounded-2xl flex flex-col items-center justify-center text-center">
+                                <i class="devicon-tailwindcss-plain colored text-4xl mb-3"></i>
+                                <span class="text-xs font-semibold text-gray-900 dark:text-white">Tailwind</span>
+                            </div>
+
+                            <!-- Google Colab -->
+                            <div class="glossy-card p-6 rounded-2xl flex flex-col items-center justify-center text-center">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Colaboratory_SVG_Logo.svg" alt="Google Colab" class="w-10 h-10 mb-3 object-contain">
+                                <span class="text-xs font-semibold text-gray-900 dark:text-white">Google Colab</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div> <!-- END OF TAB CONTENT WRAPPER -->
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="py-24 relative z-10 border-t border-gray-200 dark:border-gray-800/50 bg-transparent">
+            <div class="max-w-6xl mx-auto px-6">
+                
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">
+                    
+                    <!-- KIRI: FIND ME -->
+                    <div class="md:col-span-5 lg:col-span-4 flex flex-col gap-6">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2 tracking-wide uppercase">Find Me</h3>
+                        
+                        <!-- WhatsApp -->
+                        <a href="https://wa.me/" target="_blank" class="glass-card flex items-center justify-between p-4 rounded-2xl border border-gray-200 dark:border-gray-700/50 hover:border-primary transition-colors group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center text-green-500 text-xl border border-green-500/20"><i class="fa-brands fa-whatsapp"></i></div>
+                                <div><h4 class="text-sm font-bold text-gray-900 dark:text-white">WhatsApp</h4><p class="text-xs text-gray-500 dark:text-gray-400">081225840611</p></div>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-gray-400 group-hover:text-primary transition-colors text-sm -rotate-45"></i>
+                        </a>
+
+                        <!-- Email -->
+                        <a href="mailto:luthfiana722@gmail.com" class="glass-card flex items-center justify-between p-4 rounded-2xl border border-gray-200 dark:border-gray-700/50 hover:border-primary transition-colors group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center text-red-500 text-xl border border-red-500/20"><i class="fa-solid fa-envelope"></i></div>
+                                <div><h4 class="text-sm font-bold text-gray-900 dark:text-white">Email</h4><p class="text-xs text-gray-500 dark:text-gray-400">luthfiana722@gmail.com</p></div>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-gray-400 group-hover:text-primary transition-colors text-sm -rotate-45"></i>
+                        </a>
+
+                        <!-- LinkedIn -->
+                        <a href="https://www.linkedin.com/in/luthfianazzalea/" target="_blank" class="glass-card flex items-center justify-between p-4 rounded-2xl border border-gray-200 dark:border-gray-700/50 hover:border-primary transition-colors group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-blue-600/10 flex items-center justify-center text-blue-600 text-xl border border-blue-600/20"><i class="fa-brands fa-linkedin-in"></i></div>
+                                <div><h4 class="text-sm font-bold text-gray-900 dark:text-white">LinkedIn</h4><p class="text-xs text-gray-500 dark:text-gray-400">luthfianazzalea</p></div>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-gray-400 group-hover:text-primary transition-colors text-sm -rotate-45"></i>
+                        </a>
+
+                        <!-- Instagram -->
+                        <a href="https://www.instagram.com/luthfianazzalea/" target="_blank" class="glass-card flex items-center justify-between p-4 rounded-2xl border border-gray-200 dark:border-gray-700/50 hover:border-primary transition-colors group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-xl bg-pink-500/10 flex items-center justify-center text-pink-500 text-xl border border-pink-500/20"><i class="fa-brands fa-instagram"></i></div>
+                                <div><h4 class="text-sm font-bold text-gray-900 dark:text-white">Instagram</h4><p class="text-xs text-gray-500 dark:text-gray-400">@luthfianazzalea</p></div>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-gray-400 group-hover:text-primary transition-colors text-sm -rotate-45"></i>
+                        </a>
+                    </div>
+
+                    <!-- KANAN: FORMULIR HUBUNGI -->
+                    <div class="md:col-span-7 lg:col-span-8 glass-card bg-white/70 dark:bg-[#0b1121] p-8 md:p-10 rounded-3xl border border-gray-200 dark:border-gray-700/60 shadow-2xl relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -z-10"></div>
+                        
+                        <h3 class="text-3xl font-bold text-primary mb-2">Get In Touch</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mb-8 text-sm sm:text-base">Open to discussions, sharing experiences, and exploring new opportunities. Let's connect!</p>
+                        
+                        <form id="my-form" action="https://formspree.io/f/xwllrrvo" method="POST" class="space-y-6 relative z-10">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Name</label>
+                                <div class="relative flex items-center">
+                                    <i class="fa-regular fa-user absolute left-4 text-gray-500 dark:text-gray-400 text-lg"></i>
+                                    <input type="text" name="nama" placeholder="Your name" class="w-full pl-12 pr-4 py-3.5 rounded-xl bg-gray-50 dark:bg-[#121b2f] border border-gray-200 dark:border-gray-700/80 text-gray-900 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" required>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                                <div class="relative flex items-center">
+                                    <i class="fa-regular fa-envelope absolute left-4 text-gray-500 dark:text-gray-400 text-lg"></i>
+                                    <input type="email" name="email" placeholder="Your Email" class="w-full pl-12 pr-4 py-3.5 rounded-xl bg-gray-50 dark:bg-[#121b2f] border border-gray-200 dark:border-gray-700/80 text-gray-900 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" required>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Message</label>
+                                <div class="relative flex items-start">
+                                    <i class="fa-regular fa-comment-dots absolute left-4 top-4 text-gray-500 dark:text-gray-400 text-lg"></i>
+                                    <textarea name="pesan" rows="4" placeholder="Your Message" class="w-full pl-12 pr-4 py-3.5 rounded-xl bg-gray-50 dark:bg-[#121b2f] border border-gray-200 dark:border-gray-700/80 text-gray-900 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none" required></textarea>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" id="my-form-button" class="w-full flex items-center justify-center gap-2 py-4 bg-[#3b82f6] text-white font-bold rounded-xl hover:bg-blue-600 shadow-[0_0_15px_rgba(59,130,246,0.3)] active:scale-95 transition-all">
+                                <i class="fa-solid fa-paper-plane"></i> Send
+                            </button>
+
+                            <p id="my-form-status" class="text-center font-medium mt-3 text-sm"></p>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </div> <!-- END OF MAIN CONTENT -->
+
+    <!-- ================= HALAMAN DETAIL (FULL PAGE) UNTUK PROJECT & EXPERIENCE ================= -->
+    <div id="detail-page" class="hidden min-h-screen pt-20 pb-20 px-6 sm:px-12 relative z-20">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex items-center gap-4 mb-12">
+                <button onclick="closeDetail()" class="flex items-center gap-2 px-4 py-2 bg-white/50 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-xl transition-colors border border-gray-300 dark:border-gray-700 backdrop-blur-md text-gray-900 dark:text-white font-semibold">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </button>
+                <div id="detail-breadcrumb" class="text-sm font-medium text-gray-500"></div>
+            </div>
+
+            <!-- Tata letak Review: Teks di Kiri, Foto Asli di Kanan -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-white/70 dark:bg-transparent p-6 lg:p-0 rounded-3xl backdrop-blur-md border border-gray-200 dark:border-transparent">
+                <div class="lg:col-span-6 flex flex-col justify-center">
+                    <h1 id="detail-title" class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">Judul Project</h1>
+                    <p id="detail-desc" class="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-10 text-justify">Deskripsi project...</p>
+                    <div id="detail-tools-section">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-code text-gray-500"></i> Tools & Technologies
+                        </h3>
+                        <div id="detail-tools-container" class="flex flex-wrap gap-3"></div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6">
+                    <div class="glass-card p-4 rounded-3xl w-full border border-gray-300 dark:border-gray-700/50 bg-gray-100 dark:bg-gray-900/50">
+                        <img id="detail-img" src="" alt="Project Preview" class="w-full h-auto object-cover rounded-2xl max-h-[500px]">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL POP-UP KHUSUS UNTUK CERTIFICATES ================= -->
+    <div id="certModal" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-content relative flex flex-col items-center" onclick="event.stopPropagation()">
+            <button onclick="closeModal(event)" class="absolute top-4 right-4 bg-gray-800/80 hover:bg-red-500 text-white p-3 rounded-full backdrop-blur-md transition-colors z-20">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 id="modal-title" class="text-2xl font-bold text-white mb-6 mt-2 text-center w-full pr-8">Judul Sertifikat</h3>
+            <img id="modal-img" src="" alt="Sertifikat" class="w-full h-auto max-h-[70vh] object-contain rounded-xl bg-gray-900">
+        </div>
+    </div>
+
+    <!-- SCRIPT UTAMA & LOGIKA -->
+    <script>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#3b82f6" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.6, "random": true, "anim": {"enable": true, "speed": 1.5, "opacity_min": 0.1, "sync": false} },
+                "size": { "value": 3.5, "random": true },
+                "line_linked": { "enable": true, "distance": 130, "color": "#3b82f6", "opacity": 0.3, "width": 1 },
+                "move": { "enable": true, "speed": 2.5, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" } }
+            },
+            "retina_detect": true
+        });
+
+        function switchTab(tabId) {
+            const allTabs = document.querySelectorAll('.tab-btn');
+            const allContents = document.querySelectorAll('.tab-content');
+
+            allTabs.forEach(tab => {
+                tab.classList.remove('active-tab', 'bg-primary', 'text-white', 'shadow-[0_0_15px_rgba(59,130,246,0.5)]');
+                tab.classList.add('text-gray-600', 'dark:text-gray-400');
+            });
+            allContents.forEach(content => { content.classList.remove('active'); });
+
+            const activeBtn = document.getElementById('tab-' + tabId);
+            activeBtn.classList.remove('text-gray-600', 'dark:text-gray-400');
+            activeBtn.classList.add('active-tab', 'bg-primary', 'text-white', 'shadow-[0_0_15px_rgba(59,130,246,0.5)]');
+            document.getElementById('content-' + tabId).classList.add('active');
+        }
+
+        function openDetail(category, title, description, imagePath, toolsStr) {
+            document.getElementById('main-content').classList.add('hidden');
+            document.getElementById('main-navbar').classList.add('hidden');
+            
+            const detailPage = document.getElementById('detail-page');
+            detailPage.classList.remove('hidden');
+            window.scrollTo(0, 0);
+
+            document.getElementById('detail-breadcrumb').innerHTML = `<span class="text-gray-500">Back</span> &nbsp; ${category} &nbsp; > &nbsp; <span class="text-gray-900 dark:text-white font-semibold">${title}</span>`;
+            document.getElementById('detail-title').textContent = title;
+            document.getElementById('detail-desc').textContent = description;
+            document.getElementById('detail-img').src = imagePath;
+
+            const toolsContainer = document.getElementById('detail-tools-container');
+            const toolsSection = document.getElementById('detail-tools-section');
+            
+            if(toolsStr) {
+                toolsSection.style.display = 'block';
+                let toolsHtml = '';
+                const toolsArr = toolsStr.split(',');
+                toolsArr.forEach(t => {
+                    const parts = t.split('|');
+                    const name = parts[0].trim();
+                    const icon = parts[1] ? parts[1].trim() : '';
+                    toolsHtml += `<span class="px-3 py-1.5 bg-white/50 dark:bg-white/10 rounded-lg text-sm font-semibold flex items-center gap-2 border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-white">${icon} ${name}</span>`;
+                });
+                toolsContainer.innerHTML = toolsHtml;
+            } else {
+                toolsSection.style.display = 'none';
+            }
+        }
+
+        function closeDetail() {
+            document.getElementById('detail-page').classList.add('hidden');
+            document.getElementById('main-content').classList.remove('hidden');
+            document.getElementById('main-navbar').classList.remove('hidden');
+            document.getElementById('portfolio').scrollIntoView({behavior: 'smooth'});
+        }
+
+        function openModal(title, imgSrc) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-img').src = imgSrc;
+            document.getElementById('certModal').classList.add('show');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeModal(e) {
+            if(e) e.preventDefault();
+            document.getElementById('certModal').classList.remove('show');
+            document.body.style.overflow = 'auto'; 
+        }
+
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-icon-dark');
+        const lightIcon = document.getElementById('theme-icon-light');
+        
+        function updateIcons() {
+            if (document.documentElement.classList.contains('dark')) {
+                darkIcon.classList.add('hidden'); lightIcon.classList.remove('hidden');
+            } else {
+                lightIcon.classList.add('hidden'); darkIcon.classList.remove('hidden');
+            }
+        }
+
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else if (localStorage.getItem('color-theme') === 'light') {
+            document.documentElement.classList.remove('dark');
+        } else {
+            document.documentElement.classList.add('dark'); localStorage.setItem('color-theme', 'dark');
+        }
+        updateIcons();
+
+        themeToggleBtn.addEventListener('click', function() {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark'); localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark'); localStorage.setItem('color-theme', 'dark');
+            }
+            updateIcons();
+        });
+
+        var form = document.getElementById("my-form");
+            
+        async function handleSubmit(event) {
+          event.preventDefault();
+          var status = document.getElementById("my-form-status");
+          var data = new FormData(event.target);
+          
+          status.innerHTML = "Sending message...";
+          status.className = "text-center font-medium mt-3 text-sm text-blue-500 dark:text-blue-400";
+
+          fetch(event.target.action, {
+            method: form.method,
+            body: data,
+            headers: {
+                'Accept': 'application/json'
+            }
+          }).then(response => {
+            if (response.ok) {
+              status.innerHTML = "Thank you! Your message has been sent successfully.";
+              status.className = "text-center font-medium mt-3 text-sm text-green-500 dark:text-green-400";
+              form.reset(); 
+            } else {
+              response.json().then(data => {
+                if (Object.hasOwn(data, 'errors')) {
+                  status.innerHTML = data["errors"].map(error => error["message"]).join(", ");
+                } else {
+                  status.innerHTML = "Oops! There was a problem submitting your form.";
+                }
+                status.className = "text-center font-medium mt-3 text-sm text-red-500 dark:text-red-400";
+              })
+            }
+          }).catch(error => {
+            status.innerHTML = "Oops! A network error occurred.";
+            status.className = "text-center font-medium mt-3 text-sm text-red-500 dark:text-red-400";
+          });
+        }
+
+        if (form) {
+            form.addEventListener("submit", handleSubmit);
+        }
+    </script>
+
+    <!-- FOOTER PORTFOLIO -->
+    <footer class="relative z-10 py-8 border-t border-gray-800 bg-[#070b14]/80 backdrop-blur-md text-gray-400 text-sm mt-20">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="text-center sm:text-left">
+                <p>&copy; 2026 Luthfiana Azzalea Afifah. All rights reserved.</p>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="https://www.linkedin.com/in/luthfianazzalea/" target="_blank" class="hover:text-primary transition-colors text-lg" aria-label="LinkedIn">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+                <a href="https://www.instagram.com/luthfianazzalea/" target="_blank" class="hover:text-primary transition-colors text-lg" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="mailto:luthfiana722@gmail.com" class="hover:text-primary transition-colors text-lg" aria-label="Email">
+                    <i class="fa-regular fa-envelope"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
